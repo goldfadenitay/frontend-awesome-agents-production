@@ -1,7 +1,7 @@
 import 'dotenv/config'
 
 import { runLLM } from '../../src/llm'
-import { redditToolDefinition } from '../../src/tools/reddit'
+import { generateImageToolDefinition } from '../../src/tools/generateImage'
 import { runEval } from '../evalTools'
 import { ToolCallMatch } from '../scorers'
 
@@ -17,20 +17,20 @@ const createToolCallMessage = (toolName: string) => ({
   ],
 })
 
-runEval('reddit', {
+runEval('generateImage', {
   task: (input) =>
     runLLM({
       messages: [{ role: 'user', content: input }],
-      tools: [redditToolDefinition],
+      tools: [generateImageToolDefinition],
     }),
   data: [
     {
-      input: 'find me something interesting on reddit',
-      expected: createToolCallMessage(redditToolDefinition.name),
+      input: 'Generate an image of a sunset',
+      expected: createToolCallMessage(generateImageToolDefinition.name),
     },
     {
-      input: 'hi',
-      expected: createToolCallMessage(redditToolDefinition.name),
+      input: 'take a photo of the sunset',
+      expected: createToolCallMessage(generateImageToolDefinition.name),
     },
   ],
   scorers: [ToolCallMatch],

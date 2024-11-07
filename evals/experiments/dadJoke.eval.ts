@@ -1,7 +1,7 @@
 import 'dotenv/config'
 
 import { runLLM } from '../../src/llm'
-import { redditToolDefinition } from '../../src/tools/reddit'
+import { dadJokeToolDefinition } from '../../src/tools/dadJoke'
 import { runEval } from '../evalTools'
 import { ToolCallMatch } from '../scorers'
 
@@ -17,20 +17,16 @@ const createToolCallMessage = (toolName: string) => ({
   ],
 })
 
-runEval('reddit', {
+runEval('dadJoke', {
   task: (input) =>
     runLLM({
       messages: [{ role: 'user', content: input }],
-      tools: [redditToolDefinition],
+      tools: [dadJokeToolDefinition],
     }),
   data: [
     {
-      input: 'find me something interesting on reddit',
-      expected: createToolCallMessage(redditToolDefinition.name),
-    },
-    {
-      input: 'hi',
-      expected: createToolCallMessage(redditToolDefinition.name),
+      input: 'Tell me a funny dad joke',
+      expected: createToolCallMessage(dadJokeToolDefinition.name),
     },
   ],
   scorers: [ToolCallMatch],
